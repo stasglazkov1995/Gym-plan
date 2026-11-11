@@ -1,0 +1,52 @@
+:root{--bg:#f6f5f2;--card:#fff;--ink:#1d1d1f;--muted:#6b6b70;--line:#e6e4df;--base:#d9d7d2;--pri:#d8432f;--sec:#f2a493;--acc:#2f6f4f}
+  @media (prefers-color-scheme:dark){:root{--bg:#141414;--card:#1e1e1f;--ink:#f1f1f1;--muted:#a3a3a8;--line:#2e2e30;--base:#3a3a3d;--pri:#ff5a43;--sec:#8a4a3f;--acc:#6fc196}}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  header{padding:22px 16px 8px;max-width:760px;margin:0 auto}
+  h1{font-size:22px;margin:0 0 4px}
+  .sub{color:var(--muted);font-size:13.5px}
+  nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+  nav .in{max-width:760px;margin:0 auto;display:flex;gap:6px;padding:8px 16px}
+  nav button{flex:1;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px 4px;border-radius:10px;font-size:13.5px;font-weight:600;cursor:pointer}
+  nav button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  main{max-width:760px;margin:0 auto;padding:12px 16px 40px}
+  .dayhead{margin:6px 0 12px}
+  .dayhead h2{margin:0;font-size:19px}
+  .dayhead p{margin:2px 0 0;color:var(--muted);font-size:13.5px}
+  .ex{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px;display:grid;grid-template-columns:132px 1fr;gap:12px;align-items:center}
+  .ex svg{width:132px;height:auto;display:block}
+  .num{display:inline-block;min-width:22px;height:22px;border-radius:11px;background:var(--line);text-align:center;font-size:12px;font-weight:700;line-height:22px;margin-right:6px}
+  .name{font-weight:650;font-size:15.5px}
+  .tag{display:inline-block;font-size:11px;font-weight:700;color:var(--acc);border:1px solid var(--acc);border-radius:6px;padding:0 5px;margin-left:6px;vertical-align:2px}
+  .meta{color:var(--muted);font-size:13px;margin:3px 0 6px}
+  .meta b{color:var(--ink)}
+  .chips{display:flex;flex-wrap:wrap;gap:4px}
+  .chip{font-size:11.5px;padding:2px 7px;border-radius:20px}
+  .chip.p{background:var(--pri);color:#fff}
+  .chip.s{background:var(--sec);color:var(--ink)}
+  .note{font-size:12.5px;color:var(--muted);margin-top:6px}
+  .legend{display:flex;gap:14px;font-size:12.5px;color:var(--muted);margin-top:8px}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+  .tips{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:13.5px;margin-top:16px}
+  .tips h3{margin:0 0 6px;font-size:15px}
+  .tips ul{margin:0;padding-left:18px}
+  .ex.has-img{grid-template-columns:1fr}
+  .pic{margin:0;background:#fff;border-radius:10px;overflow:hidden}
+  .pic img{width:100%;height:auto;display:block}
+  .pic figcaption{display:flex;justify-content:space-around;font-size:11.5px;color:#6b6b70;padding:0 0 6px;text-transform:uppercase;letter-spacing:.06em}
+  .day{display:none}.day.on{display:block}
+  .sets{display:flex;align-items:center;gap:6px;margin:2px 0 8px}
+  .sets span{font-size:12px;color:var(--muted);margin-right:2px}
+  .set{width:30px;height:30px;border-radius:8px;border:1.5px solid var(--line);background:var(--card);color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;padding:0}
+  .set.on{background:var(--acc);border-color:var(--acc);color:#fff}
+  .set.chk{width:auto;height:34px;padding:0 12px 0 8px;display:inline-flex;align-items:center;gap:8px;font-weight:600}
+  .set.chk i{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--muted);display:inline-block;position:relative}
+  .set.chk.on i{border-color:#fff;background:#fff}
+  .set.chk.on i:after{content:"";position:absolute;left:5px;top:1px;width:5px;height:10px;border:solid var(--acc);border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+  .set.chk em{font-style:normal}
+  .ex.done{border-color:var(--acc)}
+  .ex.done .name{color:var(--acc)}
+  .prog{font-size:13px;color:var(--muted);margin-top:4px}
+  .prog b{color:var(--acc)}
+  .reset{border:1px solid var(--line);background:none;color:var(--muted);font-size:12px;border-radius:8px;padding:3px 8px;margin-left:8px;cursor:pointer}
+  @media (max-width:380px){.ex{grid-template-columns:108px 1fr}.ex svg{width:108px}}
