@@ -6,19 +6,42 @@
 <title>Програма тренувань для тенісу — 3 дні</title>
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-mode="gym">
 <header>
   <h1>Тренажерний зал + теніс</h1>
-  <div class="sub">3 дні на тиждень: пн / ср / пт. Підходи × повторення. Перед базовими вправами — 2 розминочні підходи (×15 легко, ×10 важче).</div>
-  <div class="legend"><span><i style="background:var(--pri)"></i>основні м'язи</span><span><i style="background:var(--sec)"></i>допоміжні</span></div>
+  <div class="modes" role="tablist">
+    <button data-m="gym" role="tab" class="on">Тренування</button>
+    <button data-m="food" role="tab">Харчування</button>
+  </div>
+  <div class="mode-gym">
+    <div class="sub">3 дні на тиждень: пн / ср / пт. Підходи × повторення. Перед базовими вправами — 2 розминочні підходи (×15 легко, ×10 важче).</div>
+    <div class="legend"><span><i style="background:var(--pri)"></i>основні м'язи</span><span><i style="background:var(--sec)"></i>допоміжні</span></div>
+  </div>
+  <div class="stats mode-food">
+    <div><b>~2350</b>ккал на день</div>
+    <div><b>160–180 г</b>білка на день</div>
+  </div>
 </header>
-<nav><div class="in">
-  <button data-d="mon" class="on">Пн · груди/біцепс</button>
-  <button data-d="wed">Ср · спина/трицепс</button>
-  <button data-d="fri">Пт · ноги/прес</button>
-</div></nav>
+<nav>
+  <div class="in mode-gym">
+    <button data-d="mon" class="on">Пн · груди/біцепс</button>
+    <button data-d="wed">Ср · спина/трицепс</button>
+    <button data-d="fri">Пт · ноги/прес</button>
+  </div>
+  <div class="in mode-food">
+    <button data-d="food-mon">Пн</button>
+    <button data-d="food-tue">Вт</button>
+    <button data-d="food-wed">Ср</button>
+    <button data-d="food-thu">Чт</button>
+    <button data-d="food-fri">Пт</button>
+    <button data-d="food-sat">Сб</button>
+    <button data-d="food-sun">Нд</button>
+  </div>
+</nav>
 <main id="main"></main>
 
-<script src="script.js"></script>
+<script src="js/training.js"></script>
+<script src="js/food.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>

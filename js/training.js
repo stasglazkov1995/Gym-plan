@@ -1,3 +1,6 @@
+// Training tab: muscle body map, exercise plan (PLAN) and renderTraining().
+// Uses chk() from app.js, which is loaded after this file and calls renderTraining().
+
 // ---------- Body map ----------
 // Each muscle: shapes on front (f) and/or back (b) figure. Coordinates in a 100x200 box per figure.
 const E=(cx,cy,rx,ry,rot=0)=>({t:'e',cx,cy,rx,ry,rot});
@@ -83,58 +86,27 @@ const PLAN={
  ]},
 };
 
-function render(){
-  const m=document.getElementById('main');
+// ---------- Render ----------
+function renderTraining(){
   let html='';
   for(const [k,d] of Object.entries(PLAN)){
-    html+=`<section class="day${k==='mon'?' on':''}" id="d-${k}"><div class="dayhead"><h2>${d.title}</h2><p>${d.sub}</p><div class="prog" id="prog-${k}"></div></div>`;
+    html+=`<section class="day mode-gym" id="d-${k}"><div class="dayhead"><h2>${d.title}</h2><p>${d.sub}</p><div class="prog" id="prog-${k}" data-lbl="gym"></div></div>`;
     d.ex.forEach((e,i)=>{
       const key=k+'-'+i, n=1;
-      html+=`<div class="ex${e.img?' has-img':''}" data-k="${key}" data-n="${n}">${e.img?`<figure class="pic"><img src="${e.img}" alt="${e.n}: старт і фініш" loading="lazy"><figcaption><span>старт</span><span>фініш</span></figcaption></figure>`:bodySVG(e.p,e.q)}<div>
+      html+=`<div class="ex${e.img?' has-img':''}" data-k="${key}" data-g="${k}" data-n="${n}">${e.img?`<figure class="pic"><img src="${e.img}" alt="${e.n}: старт і фініш" loading="lazy"><figcaption><span>старт</span><span>фініш</span></figcaption></figure>`:bodySVG(e.p,e.q)}<div>
         <div class="name"><span class="num">${i+1}</span>${e.n}${e.tag?`<span class="tag">${e.tag}</span>`:''}</div>
         <div class="meta"><b>${e.s}</b> · відпочинок ${e.r}</div>
-        <div class="sets"><button class="set chk" data-k="${key}" data-j="0"><i></i><em>Не виконано</em></button></div>
+        ${chk(key,'gym')}
         <div class="chips">${e.p.map(x=>`<span class="chip p">${NAMES[x]}</span>`).join('')}${e.q.map(x=>`<span class="chip s">${NAMES[x]}</span>`).join('')}</div>
         ${e.note?`<div class="note">${e.note}</div>`:''}</div></div>`;
     });
     html+=`</section>`;
   }
-  html+=`<div class="tips"><h3>Поради</h3><ul>
+  html+=`<div class="tips mode-gym"><h3>Поради</h3><ul>
     <li>Новачкам перший місяць — 8–12 повторень у всіх вправах, потім переходити на 5–6.</li>
     <li>Спочатку важкі базові вправи, потім ізолюючі.</li>
     <li>Важкий день ніг не ставити напередодні матчу чи інтенсивного тенісу.</li>
     <li>Виконав верхню межу повторень у всіх підходах — додай вагу.</li></ul>
     <p class="note">Основа: програма AtletPro (atletpro.com.ua), доповнена вправами для тенісу.</p></div>`;
-  m.innerHTML=html;
+  return html;
 }
-render();
-// ---------- Checkboxes (reset daily) ----------
-const SKEY='gymplan-checks';
-const today=()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();};
-let ST={date:today(),done:{}};
-try{const raw=localStorage.getItem(SKEY); if(raw){const p=JSON.parse(raw); if(p&&p.date===today())ST=p;}}catch(e){}
-function save(){try{localStorage.setItem(SKEY,JSON.stringify(ST));}catch(e){}}
-function paint(){
-  document.querySelectorAll('.set').forEach(b=>{const a=ST.done[b.dataset.k]||[];const on=!!a[+b.dataset.j];b.classList.toggle('on',on);const t=b.querySelector('em');if(t)t.textContent=on?'Виконано':'Не виконано';});
-  const tot={};
-  document.querySelectorAll('.ex[data-k]').forEach(c=>{const n=+c.dataset.n,a=ST.done[c.dataset.k]||[];let cnt=0;for(let j=0;j<n;j++)if(a[j])cnt++;
-    const full=cnt===n;c.classList.toggle('done',full);const d=c.dataset.k.split('-')[0];tot[d]=tot[d]||[0,0];tot[d][1]++;if(full)tot[d][0]++;});
-  for(const d in tot){const el=document.getElementById('prog-'+d);if(el)el.innerHTML=`Сьогодні виконано: <b>${tot[d][0]} / ${tot[d][1]}</b> вправ<button class="reset" data-reset="${d}">скинути</button>`;}
-}
-function checkDay(){if(ST.date!==today()){ST={date:today(),done:{}};save();paint();}}
-document.addEventListener('click',ev=>{
-  const b=ev.target.closest('.set');
-  if(b){checkDay();const k=b.dataset.k,j=+b.dataset.j;const a=ST.done[k]||(ST.done[k]=[]);a[j]=!a[j];save();paint();return;}
-  const r=ev.target.closest('[data-reset]');
-  if(r){const d=r.dataset.reset;for(const k in ST.done)if(k.startsWith(d+'-'))delete ST.done[k];save();paint();}
-});
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkDay();});
-setInterval(checkDay,60000);
-paint();
-(()=>{const m={1:'mon',3:'wed',5:'fri'}[new Date().getDay()];if(m){const b=document.querySelector(`nav button[data-d="${m}"]`);if(b)b.click();}})();
-window.scrollTo(0,0);
-document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));
-  document.querySelectorAll('.day').forEach(s=>s.classList.toggle('on',s.id==='d-'+b.dataset.d));
-  window.scrollTo({top:0,behavior:'smooth'});
-}));
