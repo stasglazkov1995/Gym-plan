@@ -61,7 +61,8 @@ function renderFood(){
   let html='';
   for(const [k,d] of Object.entries(FOOD)){
     const g='food-'+k;
-    html+=`<section class="day mode-food" id="d-${g}"><div class="dayhead"><h2>${d.title}</h2><span class="daytag${d.gym?'':' off'}">${d.tag}</span><div class="prog" id="prog-${g}" data-lbl="food"></div></div>`;
+    const muscles=d.gym&&PLAN[k]?' · '+PLAN[k].main.map(x=>GROUPS[x].n.toLowerCase()).join(' + '):'';
+    html+=`<section class="day mode-food" id="d-${g}"><div class="dayhead"><h2>${d.title}</h2><span class="daytag${d.gym?'':' off'}">${d.tag}${muscles}</span><div class="prog" id="prog-${g}" data-lbl="food"></div></div>`;
     d.meals.forEach((ml,i)=>{
       const key=g+'-'+i;
       html+=`<div class="ex meal" data-k="${key}" data-g="${g}" data-n="1">

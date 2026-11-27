@@ -55,9 +55,18 @@ function bodySVG(pri,sec){
     <text x="150" y="190" font-size="9" text-anchor="middle" fill="var(--muted)">ззаду</text></svg>`;
 }
 
+// ---------- Main muscle groups ----------
+// h = hours until the group is recovered after a session (recovery timer in js/recovery.js).
+const GROUPS={
+  chest:{n:"Груди",h:72},biceps:{n:"Біцепс",h:48},
+  back:{n:"Спина",h:72},triceps:{n:"Трицепс",h:48},
+  legs:{n:"Ноги",h:72},abs:{n:"Прес",h:48},
+};
+
 // ---------- Plan ----------
+// main = the day's main muscle groups (keys of GROUPS).
 const PLAN={
- mon:{title:"Понеділок · груди + біцепс",sub:"Відпочинок 3–4 хв на базових, 2–3 хв на решті.",ex:[
+ mon:{title:"Понеділок · груди + біцепс",main:["chest","biceps"],sub:"Відпочинок 3–4 хв на базових, 2–3 хв на решті.",ex:[
   {n:"Жим штанги на похилій лаві",s:"3 × 5–6",r:"3–4 хв",p:["chest"],q:["delts_f","triceps"],img:"img/mon1.webp"},
   {n:"Згинання з EZ-грифом на лаві Скотта",s:"3 × 5–6",r:"3 хв",p:["biceps"],q:["forearms"],img:"img/mon2b.webp"},
   {n:"Жим гантелей на похилій лаві",s:"3 × 6–8",r:"3 хв",p:["chest"],q:["delts_f","triceps"],img:"img/mon3.webp"},
@@ -66,7 +75,7 @@ const PLAN={
   {n:"Бруси",s:"2 × 6–8",r:"3 хв",p:["chest","triceps"],q:["delts_f"],img:"img/mon6.webp"},
   {n:"Гіперекстензія",s:"2 × 12–15",r:"2–3 хв",p:["lowback"],q:["glutes","hamstrings"],img:"img/mon7.webp"},
  ]},
- wed:{title:"Середа · спина + трицепс",sub:"Відпочинок 3–4 хв на базових, 2–3 хв на решті.",ex:[
+ wed:{title:"Середа · спина + трицепс",main:["back","triceps"],sub:"Відпочинок 3–4 хв на базових, 2–3 хв на решті.",ex:[
   {n:"Тяга верхнього блоку широким хватом",s:"3 × 5–6",r:"3–4 хв",p:["lats"],q:["biceps","delts_r"],img:"img/wed1.webp"},
   {n:"Розгинання рук на верхньому блоці",s:"3 × 5–6",r:"3–4 хв",p:["triceps"],q:[],img:"img/wed2.webp"},
   {n:"Тяга нижнього блоку сидячи",s:"3 × 5–6",r:"3–4 хв",p:["lats"],q:["traps","delts_r","biceps"],note:"Вузька V-ручка до низу живота, спина рівна, лопатки зводь у кінці руху.",img:"img/wed3.webp"},
@@ -75,7 +84,7 @@ const PLAN={
   {n:"Горизонтальний дроворуб на кросовері",s:"3 × 10 на сторону",r:"2 хв",p:["obliques"],q:["abs","delts_f"],tag:"теніс",note:"Horizontal cable woodchop. Блок на рівні грудей, тягни горизонтально з поворотом стегон і корпусу — як форхенд.",img:"img/wed6b.webp"},
   {n:"Зворотний дроворуб знизу вгору",s:"3 × 10 на сторону",r:"2 хв",p:["obliques","delts_r"],q:["abs","glutes","traps"],tag:"теніс",note:"Low-to-high cable woodchop. Блок внизу, тягни по діагоналі вгору з поворотом стегон — як дворучний бекхенд.",img:"img/wed7b.webp"},
  ]},
- fri:{title:"П'ятниця · ноги + прес",sub:"Вибухові вправи — на початку, поки свіжий.",ex:[
+ fri:{title:"П'ятниця · ноги + прес",main:["legs","abs"],sub:"Вибухові вправи — на початку, поки свіжий.",ex:[
   {n:"Випад з поворотом корпусу з медболом",s:"3 × 6 на сторону",r:"2 хв",p:["obliques","quads"],q:["glutes","abs"],tag:"теніс",note:"Медбол перед грудьми, у випаді — швидкий поворот у бік передньої ноги. Без кидків.",img:"img/fri1.webp"},
   {n:"Бічні стрибки з ноги на ногу",s:"3 × 6 на сторону",r:"1–2 хв",p:["glutes","quads"],q:["adductors","calves"],tag:"теніс",note:"Приземлення м'яке, затримка на 1 сек. Швидка зміна напрямку.",img:"img/fri2.webp"},
   {n:"Болгарські присідання",s:"3 × 8–10 на ногу",r:"3 хв",p:["quads","glutes"],q:["hamstrings","adductors"],img:"img/fri3.webp"},
@@ -90,7 +99,7 @@ const PLAN={
 function renderTraining(){
   let html='';
   for(const [k,d] of Object.entries(PLAN)){
-    html+=`<section class="day mode-gym" id="d-${k}"><div class="dayhead"><h2>${d.title}</h2><p>${d.sub}</p><div class="prog" id="prog-${k}" data-lbl="gym"></div></div>`;
+    html+=`<section class="day mode-gym" id="d-${k}"><div class="dayhead"><h2>${d.title}</h2><p>${d.sub}</p><div class="rec" data-day="${k}"></div><div class="prog" id="prog-${k}" data-lbl="gym"></div></div>`;
     d.ex.forEach((e,i)=>{
       const key=k+'-'+i, n=1;
       html+=`<div class="ex${e.img?' has-img':''}" data-k="${key}" data-g="${k}" data-n="${n}">${e.img?`<figure class="pic"><img src="${e.img}" alt="${e.n}: старт і фініш" loading="lazy"><figcaption><span>старт</span><span>фініш</span></figcaption></figure>`:bodySVG(e.p,e.q)}<div>
@@ -100,7 +109,7 @@ function renderTraining(){
         <div class="chips">${e.p.map(x=>`<span class="chip p">${NAMES[x]}</span>`).join('')}${e.q.map(x=>`<span class="chip s">${NAMES[x]}</span>`).join('')}</div>
         ${e.note?`<div class="note">${e.note}</div>`:''}</div></div>`;
     });
-    html+=`</section>`;
+    html+=`<div class="finish" data-day="${k}"></div></section>`;
   }
   html+=`<div class="tips mode-gym"><h3>Поради</h3><ul>
     <li>Новачкам перший місяць — 8–12 повторень у всіх вправах, потім переходити на 5–6.</li>

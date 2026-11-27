@@ -28,7 +28,12 @@ function paint(){
 function checkDay(){if(ST.date!==today()){ST={date:today(),done:{}};save();paint();}}
 document.addEventListener('click',ev=>{
   const b=ev.target.closest('.set');
-  if(b){checkDay();const k=b.dataset.k,j=+b.dataset.j;const a=ST.done[k]||(ST.done[k]=[]);a[j]=!a[j];save();paint();return;}
+  if(b){checkDay();const k=b.dataset.k,j=+b.dataset.j;const a=ST.done[k]||(ST.done[k]=[]);a[j]=!a[j];save();paint();
+    // Last item of a day ticked → tell other modules (js/recovery.js starts the recovery timer).
+    const g=b.closest('[data-g]').dataset.g;
+    if(a[j]&&[...document.querySelectorAll(`.ex[data-g="${g}"]`)].every(c=>c.classList.contains('done')))
+      document.dispatchEvent(new CustomEvent('groupdone',{detail:g}));
+    return;}
   const r=ev.target.closest('[data-reset]');
   if(r){const d=r.dataset.reset;for(const k in ST.done)if(k.startsWith(d+'-'))delete ST.done[k];save();paint();}
 });

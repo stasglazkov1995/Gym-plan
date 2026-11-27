@@ -44,6 +44,22 @@
   .items li:last-child{border-bottom:0}
   .items b{font-weight:600;white-space:nowrap}
   .tips h3+p{margin:0}
+  /* Recovery: main muscle groups + timer */
+  .rec{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 12px 6px;margin:8px 0 6px}
+  .rec-h{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+  .rec-row{display:grid;grid-template-columns:112px 1fr 94px;align-items:center;gap:10px;padding:4px 0;font-size:14px}
+  .rec-n{font-weight:650}
+  .rec-n small{font-weight:400;font-size:11.5px;color:var(--muted);margin-left:5px}
+  .rec-bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+  .rec-bar i{display:block;height:100%;width:100%;background:var(--sec);border-radius:3px}
+  .rec-row.ok .rec-bar i{background:var(--acc)}
+  .rec-t{font-size:12.5px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .rec-row.ok .rec-t{color:var(--acc);font-weight:600}
+  .finish{margin-top:14px}
+  .finish-btn{width:100%;border:0;border-radius:12px;background:var(--ink);color:var(--bg);font:inherit;font-weight:650;padding:12px;cursor:pointer}
+  .finish .note{text-align:center}
+  .finish-done{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--acc);border-radius:12px;padding:10px 12px;color:var(--acc);font-size:13.5px;font-weight:600}
+  .finish-done .reset{margin-left:0}
   .tips{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:13.5px;margin-top:16px}
   .tips h3{margin:0 0 6px;font-size:15px}
   .tips ul{margin:0;padding-left:18px}
